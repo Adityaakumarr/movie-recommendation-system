@@ -295,16 +295,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 📧 Contact
-
-**Developer**: Udita Chakraborty
-
-[![GitHub](https://img.shields.io/badge/GitHub-udii05-black?style=flat&logo=github)](https://github.com/udii05)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-blue?style=flat&logo=linkedin)](https://www.linkedin.com/in/udita-chakraborty-b890982a2/)
-[![Instagram](https://img.shields.io/badge/Instagram-Follow-E4405F?style=flat&logo=instagram)](https://www.instagram.com/u_dii05/)
-
----
-
 ## ⭐ Support
 
 If you found this project helpful, please consider:
