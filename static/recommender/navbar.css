@@ -1,0 +1,91 @@
+/* ---------------- NETFLIX NAVBAR ---------------- */
+
+.netflix-header {
+    width: 100%;
+    padding: 20px 50px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 999;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background: linear-gradient(to bottom, rgba(0,0,0,0.85), rgba(0,0,0,0));
+}
+
+.netflix-logo {
+    font-size: 40px;
+    font-weight: 900;
+    color: #e50914;
+    letter-spacing: 2px;
+}
+
+.netflix-nav {
+    display: flex;
+    gap: 25px;
+}
+
+.netflix-nav a {
+    text-decoration: none;
+    color: #e5e5e5;
+    font-size: 16px;
+    font-weight: 500;
+    transition: 0.3s;
+}
+
+.netflix-nav a:hover {
+    color: #ffffff;
+}
+
+/* -------------- MOBILE HAMBURGER (Netflix Style) -------------- */
+
+.menu-toggle {
+    display: none;
+    font-size: 28px;
+    color: #fff;
+    cursor: pointer;
+}
+
+@media screen and (max-width: 900px) {
+    .netflix-nav {
+        display: none;
+    }
+
+    .menu-toggle {
+        display: block;
+    }
+
+    /* Mobile Dropdown Menu */
+    .mobile-nav {
+        position: fixed;
+        top: 70px;
+        right: 0;
+        width: 220px;
+        background: rgba(0,0,0,0.92);
+        padding: 20px 0;
+        display: none;
+        flex-direction: column;
+        gap: 20px;
+        text-align: right;
+        padding-right: 25px;
+        z-index: 9999;
+    }
+
+    .mobile-nav a {
+        color: #e5e5e5;
+        font-size: 18px;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+    .mobile-nav a:hover {
+        color: #ffffff;
+    }
+
+    /* Class added by JS when menu is open */
+    .mobile-nav.show {
+        display: flex;
+    }
+}

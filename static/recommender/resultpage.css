@@ -1,0 +1,142 @@
+/* ---------------- NETFLIX RESULT PAGE THEME ---------------- */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #000;
+    color: #fff;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    overflow-x: hidden;
+}
+
+/* ---------------------------------------
+BACKGROUND VIDEO
+----------------------------------------*/
+#myVideo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    filter: brightness(40%);
+    z-index: -1;
+}
+
+/* ---------------------------------------
+TITLE SECTION
+----------------------------------------*/
+.title-box,
+.title-container {
+    padding: 140px 50px 10px 50px;
+    position: relative;
+    z-index: 10;
+    color: white;
+}
+
+.title-box h2,
+.title-container h3 {
+    font-size: 42px;
+    font-weight: 700;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(0,0,0,0.7);
+}
+
+/* ---------------------------------------
+GRID CONTAINER
+----------------------------------------*/
+.results-grid,
+.main-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    padding: 30px 50px;
+    gap: 25px;
+    position: relative;
+    z-index: 10;
+}
+
+/* ---------------------------------------
+MOVIE CARD
+----------------------------------------*/
+.movie-card,
+.card-container {
+    background: #141414;
+    padding: 20px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(0,0,0,0.4);
+    cursor: pointer;
+}
+
+.movie-card:hover,
+.card-container:hover {
+    transform: scale(1.07);
+    background: #1c1c1c;
+}
+
+/* ---------------------------------------
+MOVIE CARD TEXT
+----------------------------------------*/
+.movie-title,
+.card-header {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #fff;
+}
+
+.movie-meta,
+.card-para {
+    font-size: 15px;
+    color: #bbb;
+    margin-bottom: 6px;
+}
+
+/* ---------------------------------------
+MOVIE CARD LINK
+----------------------------------------*/
+.movie-link,
+.card-link {
+    margin-top: 10px;
+    display: inline-block;
+    font-weight: 600;
+    text-decoration: none;
+    color: #e50914;
+}
+
+.movie-link:hover,
+.card-link:hover {
+    color: #ff0a1f;
+    text-decoration: underline;
+}
+
+/* ---------------------------------------
+SCROLLBAR STYLING
+----------------------------------------*/
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #e50914;
+}
+
+/* ---------------------------------------
+RESPONSIVE DESIGN
+----------------------------------------*/
+@media screen and (max-width: 768px) {
+    .title-box {
+        padding-left: 20px;
+    }
+
+    .results-grid,
+    .main-container {
+        padding: 20px;
+    }
+}

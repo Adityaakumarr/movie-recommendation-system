@@ -1,0 +1,40 @@
+/* Cursor Dot */
+.cursor-dot {
+    width: 10px;
+    height: 10px;
+    background: #82D4BB;
+    border-radius: 50%;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9999;
+    transition: background 0.2s ease;
+    box-shadow: 0 0 12px #82D4BB;
+}
+
+/* Cursor Outline Soft Glow */
+.cursor-dot-outline {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #82D4BB99;
+    border-radius: 50%;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.6;
+    transition: all 0.18s ease-out;
+    box-shadow: 0 0 20px #82D4BB88;
+}
+
+/* Smooth transition when clicking / hovering */
+.cursor-click {
+    transform: translate(-50%, -50%) scale(0.8);
+    box-shadow: 0 0 18px #82D4BB;
+}
+
+.cursor-hover {
+    transform: translate(-50%, -50%) scale(1.4);
+    border-color: #82D4BB;
+    box-shadow: 0 0 25px #82D4BBaa;
+}

@@ -1,0 +1,523 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- BebasNeue -->
+    <style>
+      @font-face {
+        font-family: "BebasNeue";
+        src: url("{% static 'recommender/fonts/BebasNeue.otf' %}")
+          format("opentype");
+        font-weight: normal;
+      }
+    </style>
+
+    <!-- Inter Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>CineFinds – Movie Recommendation System</title>
+    <link rel="shortcut icon" href="{% static 'logo.png' %}" />
+
+    <!-- External Libraries -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.0/css/bootstrap.min.css"
+    />
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
+
+    <!-- Original CSS -->
+    <link rel="stylesheet" href="{% static 'recommender/cursor.css' %}" />
+    <link rel="stylesheet" href="{% static 'recommender/page.css' %}" />
+    <link rel="stylesheet" href="{% static 'recommender/navbar.css' %}" />
+
+    <!-- Custom Styling -->
+    <style>
+      /* Cinematic Slow Smoke Background — Enhanced Wave Visibility */
+      .fog-layer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 200%;
+        height: 200%;
+        pointer-events: none;
+        background-repeat: no-repeat;
+        background-size: cover;
+        filter: blur(55px); /* reduced blur so waves show */
+        opacity: 0.5; /* slightly higher for clarity */
+        z-index: -1;
+        animation: smokeWave 45s infinite ease-in-out alternate;
+      }
+
+      /* Upper fog with darker top and teal base */
+      .fog1 {
+        background: radial-gradient(
+          circle at 50% -10%,
+          rgba(0, 0, 0, 0.92) 0%,
+          rgba(0, 0, 0, 0.75) 20%,
+          rgba(20, 40, 40, 0.55) 55%,
+          rgba(130, 212, 187, 0.35) 85%,
+          rgba(130, 212, 187, 0.55) 100%
+        );
+      }
+
+      /* Lower fog glow with stronger teal structure */
+      .fog2 {
+        background: radial-gradient(
+          circle at 50% 120%,
+          rgba(130, 212, 187, 0.65) 0%,
+          rgba(90, 160, 150, 0.55) 35%,
+          rgba(40, 80, 70, 0.3) 75%,
+          rgba(0, 0, 0, 0) 100%
+        );
+        animation-duration: 70s;
+        opacity: 0.45;
+      }
+
+      /* Stronger wave-like movement */
+      @keyframes smokeWave {
+        0% {
+          transform: translate(-14%, -10%) scale(1.25) skewX(4deg) skewY(-2deg)
+            rotate(0deg);
+          opacity: 0.45;
+        }
+        25% {
+          transform: translate(10%, -4%) scale(1.28) skewX(-3deg) skewY(2deg)
+            rotate(1deg);
+          opacity: 0.52;
+        }
+        50% {
+          transform: translate(-8%, 6%) scale(1.32) skewX(5deg) skewY(-3deg)
+            rotate(-2deg);
+          opacity: 0.5;
+        }
+        75% {
+          transform: translate(6%, 12%) scale(1.3) skewX(-4deg) skewY(1deg)
+            rotate(1deg);
+          opacity: 0.54;
+        }
+        100% {
+          transform: translate(-10%, 5%) scale(1.27) skewX(3deg) skewY(-1deg)
+            rotate(-1deg);
+          opacity: 0.48;
+        }
+      }
+
+      /* ---------------------------------------------------------
+           FLOATING HOME ICON (Stagnant ⌂ with Breathing Glow)
+        --------------------------------------------------------- */
+      .home-icon {
+        position: absolute;
+        top: 45px;
+        right: 60px;
+        font-size: 48px;
+        color: #82d4bb;
+        cursor: pointer;
+        transform: scale(1);
+        animation: homeGlow 3s infinite ease-in-out;
+        text-shadow: 0 0 15px #82d4bb88;
+        z-index: 500;
+      }
+
+      @keyframes homeGlow {
+        0% {
+          text-shadow: 0 0 15px #82d4bb88;
+        }
+        50% {
+          text-shadow: 0 0 40px #82d4bbcc;
+        }
+        100% {
+          text-shadow: 0 0 15px #82d4bb88;
+        }
+      }
+
+      .home-icon:hover {
+        text-shadow: 0 0 50px #82d4bbee;
+      }
+
+      /* ---------------------------------------------------------
+           HEADER & LOGO
+        --------------------------------------------------------- */
+      .header {
+        width: 100%;
+        padding: 25px 50px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 200;
+      }
+
+      .logo {
+        font-family: "BebasNeue";
+        font-size: 55px;
+        letter-spacing: 3px;
+        color: #82d4bb;
+      }
+
+      /* ---------------------------------------------------------
+           CUSTOM CURSOR
+        --------------------------------------------------------- */
+      .cursor-dot {
+        background: #82d4bb !important;
+        box-shadow: 0 0 15px #82d4bb !important;
+        width: 12px !important;
+        height: 12px !important;
+        border-radius: 50% !important;
+      }
+
+      .cursor-dot-outline {
+        border: 2px solid #82d4bb88 !important;
+        box-shadow: 0 0 25px #82d4bb88 !important;
+        width: 25px !important;
+        height: 25px !important;
+        border-radius: 50% !important;
+      }
+
+      /* ---------------------------------------------------------
+           GLOBAL STYLE
+        --------------------------------------------------------- */
+      body {
+        margin: 0;
+        padding: 0;
+        background: linear-gradient(180deg, #000, #0a0a0a, #111);
+        color: #fff;
+        overflow-x: hidden;
+        min-height: 100vh;
+      }
+
+      h1,
+      h2,
+      .hero-title {
+        font-family: "BebasNeue" !important;
+      }
+
+      p,
+      .hero-sub,
+      .search-input,
+      .message,
+      a,
+      button {
+        font-family: "Inter", sans-serif !important;
+      }
+
+      /* ---------------------------------------------------------
+           HERO SECTION
+        --------------------------------------------------------- */
+      .hero-section {
+        padding-top: 180px;
+        padding-left: 50px;
+        padding-bottom: 120px;
+      }
+
+      .hero-title {
+        font-size: 85px;
+        font-weight: 900;
+        letter-spacing: 2px;
+        text-shadow: 0 0 25px rgba(0, 0, 0, 0.8);
+      }
+
+      .hero-sub {
+        font-size: 28px;
+        color: #cfcfcf;
+        letter-spacing: 1px;
+        margin-top: 10px;
+      }
+
+      /* ---------------------------------------------------------
+           SEARCH BAR
+        --------------------------------------------------------- */
+      .search-section {
+        margin-top: 35px;
+        display: flex;
+        gap: 12px;
+      }
+
+      .search-input {
+        width: 380px;
+        padding: 15px 18px;
+        font-size: 18px;
+        border-radius: 6px;
+        border: none;
+        background: #141414;
+        color: #ffffff !important;
+      }
+
+      .search-input:focus {
+        outline: 2px solid #82d4bb;
+        box-shadow: 0 0 12px #82d4bb88;
+      }
+
+      .search-input::placeholder {
+        color: #82d4bb;
+      }
+
+      .search-btn {
+        padding: 15px 28px;
+        background-color: #82d4bb;
+        border: none;
+        border-radius: 6px;
+        color: #000;
+        font-weight: 700;
+        cursor: pointer;
+        letter-spacing: 1px;
+      }
+
+      .search-btn:hover {
+        background-color: #6fbda6;
+      }
+
+      /* ---------------------------------------------------------
+           AUTOCOMPLETE (NETFLIX DARK THEME)
+        --------------------------------------------------------- */
+      .ui-autocomplete {
+        background: #0f0f0f !important;
+        border: 1px solid #1c1c1c !important;
+        border-radius: 6px !important;
+        padding: 6px 0 !important;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.55);
+        max-height: 300px;
+        overflow-y: auto;
+        z-index: 99999 !important;
+      }
+
+      .ui-autocomplete li a {
+        background: #121212 !important;
+        color: #e5e5e5 !important;
+        padding: 10px 16px !important;
+        margin: 4px 8px !important;
+        display: block !important;
+        border-radius: 6px !important;
+        font-size: 15px !important;
+        transition: 0.2s ease-in-out !important;
+      }
+
+      .ui-autocomplete li a:hover,
+      .ui-autocomplete li a.ui-state-hover,
+      .ui-autocomplete li a.ui-state-focus {
+        background: #1b1b1b !important;
+        color: #82d4bb !important;
+      }
+
+      /* ---------------------------------------------------------
+           REMOVE WHITE OUTLINE (Final Fix)
+        --------------------------------------------------------- */
+      .ui-autocomplete li a:focus,
+      .ui-autocomplete li a.ui-state-focus,
+      .ui-autocomplete li a:active {
+        outline: none !important;
+        border: none !important;
+        box-shadow: none !important;
+      }
+
+      /* ---------------------------------------------------------
+           SOCIAL LINKS
+        --------------------------------------------------------- */
+      .social-links {
+        position: absolute;
+        bottom: 30px;
+        right: 50px;
+        display: flex;
+        gap: 20px;
+        font-size: 26px;
+      }
+
+      .social-links a {
+        color: #aaa;
+        transition: 0.3s;
+      }
+
+      .social-links a:hover {
+        color: #fff;
+      }
+
+      /* Styling for "movie not found" messages */
+      .message {
+        margin-top: 25px;
+      }
+
+      .message p {
+        color: #cfcfcf !important;
+        font-family: "Inter", sans-serif !important;
+        font-size: 20px;
+        font-weight: 300;
+        letter-spacing: 0.5px;
+        line-height: 1.32;
+        margin: 4px 0;
+      }
+
+      .message b {
+        color: #cfcfcf !important;
+      }
+
+      .error-message {
+        color: #ff6b6b !important;
+        font-size: 18px;
+        margin-top: 15px;
+      }
+
+      /* Loading Spinner */
+      .loading-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.8);
+        z-index: 9999;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .loading-overlay.active {
+        display: flex;
+      }
+
+      .spinner {
+        width: 60px;
+        height: 60px;
+        border: 4px solid #333;
+        border-top: 4px solid #82d4bb;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .loading-text {
+        color: #82d4bb;
+        font-size: 20px;
+        margin-top: 20px;
+        font-family: "Inter", sans-serif;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- CSS Fog Background -->
+    <div class="fog-layer fog1"></div>
+    <div class="fog-layer fog2"></div>
+
+    <!-- FLOATING HOME ICON (Stagnant ⌂) -->
+    <a href="/" class="home-icon">⌂</a>
+
+    <!-- LOGO -->
+    <div class="header">
+      <div class="logo">CINEFINDS</div>
+    </div>
+
+    <!-- HERO -->
+    <div class="hero-section">
+      <div class="hero-title">MOVIE RECOMMENDATION SYSTEM</div>
+      <div class="hero-sub">Let us help you pick your next perfect watch.</div>
+
+      <form method="POST">
+        {% csrf_token %}
+        <div class="search-section">
+          <input
+            type="text"
+            class="search-input"
+            id="movie_name"
+            name="movie_name"
+            placeholder="Search movies..."
+            required
+          />
+
+          <button type="submit" class="search-btn">SEARCH</button>
+        </div>
+      </form>
+
+      <!-- Autocomplete & Interactions -->
+      <script>
+        $(function () {
+          var tagsString = `{% for mmm in all_movie_names %}{{ mmm }},{% endfor %}`;
+          var availableTags = tagsString.split(",").filter(Boolean);
+
+          $("#movie_name").autocomplete({
+            source: availableTags,
+            minLength: 2, // Reduced from 3 for better UX
+            delay: 200,
+          });
+
+          // Keyboard shortcuts
+          $(document).keydown(function (e) {
+            // Ctrl+K or Cmd+K to focus search
+            if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+              e.preventDefault();
+              $("#movie_name").focus();
+            }
+            // Escape to clear search
+            if (e.key === "Escape") {
+              $("#movie_name").val("").blur();
+            }
+          });
+
+          // Show loading spinner on form submit
+          $("form").on("submit", function () {
+            $(".loading-overlay").addClass("active");
+          });
+        });
+      </script>
+
+      <!-- MESSAGE -->
+      <div class="message">
+        {% if input_provided %} {% if not movie_found %}
+        <p>You searched for <b>{{ input_movie_name }}</b></p>
+        {% if not recommendation_found %}
+        <p>Oops! That movie isn't in our database.</p>
+        <p>This project contains only the top 2.5K IMDb movies.</p>
+        {% endif %} {% endif %} {% endif %} {% if error_message %}
+        <p class="error-message">{{ error_message }}</p>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay">
+      <div style="text-align: center">
+        <div class="spinner"></div>
+        <div class="loading-text">Finding perfect recommendations...</div>
+      </div>
+    </div>
+
+    <!-- CURSOR -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-dot-outline"></div>
+    <script src="{% static 'recommender/cursor.js' %}"></script>
+  </body>
+</html>

@@ -1,0 +1,475 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- BebasNeue -->
+    <style>
+      @font-face {
+        font-family: "BebasNeue";
+        src: url("{% static 'recommender/fonts/BebasNeue.otf' %}")
+          format("opentype");
+        font-weight: normal;
+      }
+    </style>
+
+    <!-- Inter Font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>CineFinds | Recommendations</title>
+    <link rel="shortcut icon" href="{% static 'logo.png' %}" />
+
+    <!-- External CSS -->
+    <link rel="stylesheet" href="{% static 'recommender/cursor.css' %}" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons@latest/iconfont/tabler-icons.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+
+    <style>
+      /* Comet-Inspired Design System */
+      :root {
+        --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+        --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        --glass-bg: rgba(255, 255, 255, 0.05);
+        --glass-border: rgba(255, 255, 255, 0.1);
+        --text-primary: #ffffff;
+        --text-secondary: rgba(255, 255, 255, 0.7);
+        --shadow-glow: 0 8px 32px rgba(31, 38, 135, 0.37);
+      }
+
+      /* Global Reset & Base */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI",
+          sans-serif;
+        background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+        background-size: 400% 400%;
+        animation: gradientShift 15s ease infinite;
+        color: var(--text-primary);
+        overflow-x: hidden;
+        min-height: 100vh;
+        position: relative;
+      }
+
+      @keyframes gradientShift {
+        0% {
+          background-position: 0% 50%;
+        }
+        50% {
+          background-position: 100% 50%;
+        }
+        100% {
+          background-position: 0% 50%;
+        }
+      }
+
+      /* Animated Background Orbs */
+      .orb {
+        position: fixed;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.3;
+        pointer-events: none;
+        z-index: 0;
+        animation: float 20s ease-in-out infinite;
+      }
+
+      .orb1 {
+        width: 500px;
+        height: 500px;
+        background: linear-gradient(135deg, #667eea, #764ba2);
+        top: -10%;
+        left: -10%;
+        animation-delay: 0s;
+      }
+
+      .orb2 {
+        width: 400px;
+        height: 400px;
+        background: linear-gradient(135deg, #f093fb, #f5576c);
+        bottom: -10%;
+        right: -10%;
+        animation-delay: 7s;
+      }
+
+      .orb3 {
+        width: 350px;
+        height: 350px;
+        background: linear-gradient(135deg, #4facfe, #00f2fe);
+        top: 50%;
+        left: 50%;
+        animation-delay: 14s;
+      }
+
+      @keyframes float {
+        0%,
+        100% {
+          transform: translate(0, 0) scale(1);
+        }
+        33% {
+          transform: translate(30px, -50px) scale(1.1);
+        }
+        66% {
+          transform: translate(-20px, 20px) scale(0.9);
+        }
+      }
+
+      /* Container */
+      .container-main {
+        position: relative;
+        z-index: 10;
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 40px;
+      }
+
+      /* Header with Glassmorphism */
+      .header {
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        padding: 24px 40px;
+        margin-bottom: 40px;
+        box-shadow: var(--shadow-glow);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .header:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 48px rgba(31, 38, 135, 0.5);
+      }
+
+      .logo {
+        font-family: "BebasNeue", sans-serif;
+        font-size: 36px;
+        font-weight: 700;
+        letter-spacing: 3px;
+        background: var(--gradient-primary);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .back-btn {
+        padding: 12px 24px;
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        color: var(--text-primary);
+        text-decoration: none;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .back-btn:hover {
+        background: var(--gradient-primary);
+        transform: translateX(-4px);
+        box-shadow: 0 4px 16px rgba(102, 126, 234, 0.4);
+      }
+
+      /* Title Section */
+      .title-section {
+        text-align: center;
+        margin-bottom: 50px;
+        animation: fadeInUp 0.8s ease-out;
+      }
+
+      .page-title {
+        font-size: 48px;
+        font-weight: 800;
+        line-height: 1.3;
+        margin-bottom: 12px;
+      }
+
+      .title-highlight {
+        background: var(--gradient-accent);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .subtitle {
+        font-size: 18px;
+        color: var(--text-secondary);
+        font-weight: 300;
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Results Grid */
+      .results-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 24px;
+        animation: fadeInUp 1s ease-out;
+      }
+
+      /* Movie Card with Glassmorphism */
+      .movie-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        padding: 28px;
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: var(--shadow-glow);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .movie-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: var(--gradient-primary);
+        transform: scaleX(0);
+        transition: transform 0.4s ease;
+      }
+
+      .movie-card:hover::before {
+        transform: scaleX(1);
+      }
+
+      .movie-card:hover {
+        transform: translateY(-8px);
+        border-color: rgba(102, 126, 234, 0.4);
+        box-shadow: 0 16px 48px rgba(102, 126, 234, 0.3);
+      }
+
+      .movie-title {
+        font-size: 22px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        line-height: 1.4;
+      }
+
+      .movie-title i {
+        color: #667eea;
+        font-size: 20px;
+      }
+
+      .movie-meta {
+        font-size: 15px;
+        color: var(--text-secondary);
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .movie-meta i {
+        font-size: 14px;
+        opacity: 0.6;
+      }
+
+      .similarity-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        background: linear-gradient(
+          135deg,
+          rgba(102, 126, 234, 0.2),
+          rgba(118, 75, 162, 0.2)
+        );
+        border: 1px solid rgba(102, 126, 234, 0.3);
+        border-radius: 12px;
+        font-weight: 600;
+        font-size: 14px;
+        color: #a8b8ff;
+        margin: 12px 0;
+      }
+
+      .similarity-badge i {
+        font-size: 12px;
+      }
+
+      .movie-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 16px;
+        padding: 12px 20px;
+        background: var(--gradient-primary);
+        color: white;
+        text-decoration: none;
+        font-weight: 600;
+        font-size: 14px;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3);
+      }
+
+      .movie-link:hover {
+        transform: translateX(4px);
+        box-shadow: 0 6px 24px rgba(102, 126, 234, 0.5);
+      }
+
+      /* Custom Cursor */
+      .cursor-dot {
+        background: linear-gradient(135deg, #667eea, #764ba2) !important;
+        box-shadow: 0 0 20px rgba(102, 126, 234, 0.6) !important;
+        width: 12px !important;
+        height: 12px !important;
+        border-radius: 50% !important;
+      }
+
+      .cursor-dot-outline {
+        border: 2px solid rgba(102, 126, 234, 0.4) !important;
+        box-shadow: 0 0 30px rgba(102, 126, 234, 0.3) !important;
+        width: 28px !important;
+        height: 28px !important;
+        border-radius: 50% !important;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .page-title {
+          font-size: 32px;
+        }
+
+        .results-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .container-main {
+          padding: 20px;
+        }
+
+        .header {
+          flex-direction: column;
+          gap: 16px;
+          text-align: center;
+        }
+      }
+
+      /* Smooth Scrollbar */
+      ::-webkit-scrollbar {
+        width: 10px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.05);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: var(--gradient-primary);
+        border-radius: 10px;
+      }
+
+      ::-webkit-scrollbar-thumb:hover {
+        background: linear-gradient(135deg, #764ba2, #667eea);
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Animated Background Orbs -->
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+
+    <div class="container-main">
+      <!-- Header -->
+      <div class="header">
+        <div class="logo">CINEFINDS</div>
+        <a href="/" class="back-btn">
+          <i class="fa fa-arrow-left"></i>
+          New Search
+        </a>
+      </div>
+
+      <!-- Title Section -->
+      <div class="title-section">
+        <h2 class="page-title">
+          Movies like
+          <span class="title-highlight">"{{ input_movie_name }}"</span>
+        </h2>
+        <p class="subtitle">
+          Handpicked recommendations based on AI similarity analysis
+        </p>
+      </div>
+
+      <!-- Results Grid -->
+      <div class="results-grid">
+        {% if recommendation_found %} {% for m in recommended_movies %}
+        <div class="movie-card">
+          <div class="movie-title">
+            <i class="fa fa-film"></i>
+            {{ m.movie_title }}
+          </div>
+
+          <div class="movie-meta">
+            <i class="fa fa-user"></i>
+            {{ m.movie_director }}
+          </div>
+
+          <div class="movie-meta">
+            <i class="fa fa-calendar"></i>
+            {{ m.movie_release_date }}
+          </div>
+
+          {% if m.similarity_score %}
+          <div class="similarity-badge">
+            <i class="fa fa-star"></i>
+            {{ m.similarity_score }}% Match
+          </div>
+          {% endif %}
+
+          <a target="_blank" href="{{ m.google_link }}" class="movie-link">
+            Learn More
+            <i class="fa fa-external-link"></i>
+          </a>
+        </div>
+        {% endfor %} {% endif %}
+      </div>
+    </div>
+
+    <!-- CURSOR GLOW -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-dot-outline"></div>
+    <script src="{% static 'recommender/cursor.js' %}"></script>
+  </body>
+</html>
